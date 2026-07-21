@@ -268,4 +268,3 @@ seek_to_position <- function(position_ms, device_id = NULL,
                                     query = params, flatten = TRUE)
     return(res)
 }
-

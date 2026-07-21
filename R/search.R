@@ -79,4 +79,3 @@ search_spotify <- function(q,
 
     return(res)
 }
-

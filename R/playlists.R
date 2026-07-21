@@ -363,4 +363,3 @@ reorder_replace_playlist_items <- function(playlist_id, uris,
                   paste0(uris, collapse = ","))
     tinyoauth::oauth_request(authorization, url, "PUT", flatten = TRUE)
 }
-

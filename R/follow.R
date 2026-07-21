@@ -122,4 +122,3 @@ check_users_following <- function(playlist_id, ids,
     data.frame(user_id = ids, playlist_id = playlist_id, is_following = res)
 
 }
-

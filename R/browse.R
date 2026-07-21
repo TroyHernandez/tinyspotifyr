@@ -300,4 +300,3 @@ get_recommendations <- function(limit = 20, market = NULL,
     }
     return(res)
 }
-

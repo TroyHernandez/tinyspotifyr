@@ -34,4 +34,3 @@ get_user_profile <- function(user_id,
 
     return(res)
 }
-

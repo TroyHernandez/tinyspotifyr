@@ -78,6 +78,5 @@ get_spotify_authorization_code <- function(client_id = Sys.getenv("SPOTIFY_CLIEN
     # and otherwise runs the authorization-code (browser) flow, writing the
     # result back to the cache.
     tinyoauth::oauth_token(client, scope = paste(scope, collapse = " "),
-        cache = cache)
+                           cache = cache)
 }
-
