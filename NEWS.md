@@ -1,3 +1,12 @@
+# tinyspotifyr 0.2.3.3
+
+* `get_spotify_authorization_code()` now falls back to a fresh login when a
+  legacy or cached refresh token is revoked, instead of hard-erroring. The
+  legacy `.httr-oauth` file seeds the tinyoauth cache once, best-effort.
+* `add_latest_to_playlist()` and `add_items_to_playlist()` skip phantom `NA`
+  episode rows (which Spotify sometimes returns) instead of posting `uris=NA`
+  and 400ing.
+
 # tinyspotifyr 0.2.3.2
 
 * Fixed `get_shows_episodes()` sending `market` twice (in the URL and via the
