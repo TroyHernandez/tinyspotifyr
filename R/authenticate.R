@@ -54,14 +54,30 @@ get_spotify_authorization_code <- function(client_id = Sys.getenv("SPOTIFY_CLIEN
     client_secret = Sys.getenv("SPOTIFY_CLIENT_SECRET"),
     scope = tinyspotifyr::scopes) {
     client <- .spotify_client(client_id, client_secret)
+    cache <- tinyoauth::oauth_cache_path(client)
+
+    # One-time migration: seed the tinyoauth cache from a legacy httr
+    # .httr-oauth file so prior authorizations keep working without a fresh
+    # login. Best-effort only: import or refresh failures (e.g. a revoked or
+    # stale legacy refresh token) fall through to oauth_token() below rather
+    # than hard-erroring the caller. Skipped once a tinyoauth cache exists.
     legacy <- ".httr-oauth"
-    if (file.exists(legacy)) {
-        imp <- tryCatch(tinyoauth::oauth_import_httr(legacy),
-                        error = function(e) NULL)
-        if (!is.null(imp)) {
-            return(tinyoauth::oauth_refresh(imp$client, imp$token))
+    if (!file.exists(cache) && file.exists(legacy)) {
+        seeded <- tryCatch({
+            imp <- tinyoauth::oauth_import_httr(legacy)
+            tok <- tinyoauth::oauth_refresh(imp$client, imp$token)
+            saveRDS(tok, cache)
+            tok
+        }, error = function(e) NULL)
+        if (!is.null(seeded)) {
+            return(seeded)
         }
     }
-    tinyoauth::oauth_token(client, scope = paste(scope, collapse = " "))
+
+    # oauth_token() returns a cached token if valid, refreshes it if expired,
+    # and otherwise runs the authorization-code (browser) flow, writing the
+    # result back to the cache.
+    tinyoauth::oauth_token(client, scope = paste(scope, collapse = " "),
+        cache = cache)
 }
 
