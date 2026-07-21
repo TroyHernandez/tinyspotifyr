@@ -89,4 +89,3 @@ scopes <- c("ugc-image-upload", "user-read-recently-played",
 #         filter(album_name_ %in% base_album_names) %>%
 #         select(-album_name_)
 # }
-

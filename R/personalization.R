@@ -50,4 +50,3 @@ get_my_top_artists_or_tracks <- function(type = NULL, limit = 20, offset = 0,
 
     return(res)
 }
-

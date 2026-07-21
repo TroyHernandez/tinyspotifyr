@@ -1,6 +1,6 @@
 Package: tinyspotifyr
 Title: Tinyverse R Wrapper for the 'Spotify' Web API
-Version: 0.2.3.2
+Version: 0.2.3.3
 Date: 2026-06-06
 Authors@R: c(person("Troy", "Hernandez", email = "troy@cornball.ai", role = c("aut", "cre", "cph"), comment = c(ORCID = "0009-0005-4248-604X")), person("Charlie", "Thompson", email = "chuck@rcharlie.com", role = c("aut", "cph")), person("Josiah", "Parry", email = "josiah.parry@yahoo.com", role = "aut"), person("Donal", "Phipps", email = "donal.phipps@gmail.com", role = "aut"), person("Tom", "Wolff", email = "tom.wolff@duke.edu", role = "aut"))
 Description: An R wrapper for the 'Spotify' Web API

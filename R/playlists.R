@@ -18,6 +18,10 @@ add_items_to_playlist <- function(playlist_id, uris, position = NULL,
                                   authorization = get_spotify_authorization_code()) {
     base_url <- 'https://api.spotify.com/v1/playlists'
 
+    # Drop NA URIs so a caller passing a phantom episode row (which Spotify
+    # sometimes returns) can't build a "uris=NA" request that 400s.
+    uris <- uris[!is.na(uris)]
+
     if (is.null(position)) {
         url <- paste0(base_url, "/", playlist_id, "/tracks?uris=",
                       paste0(uris, collapse = ","), "&market=", market)
@@ -336,9 +340,13 @@ add_latest_to_playlist <- function(playlist_id, uri, position = NULL,
                                    authorization = get_spotify_authorization_code()) {
     id <- strsplit(uri, ":")[[1]][3]
     episodes <- get_shows_episodes(id = id)
-    uris <- episodes$items$uri[1]
-    if (length(uris) > 0) {
-        add_items_to_playlist(playlist_id = playlist_id, uris = uris,
+    # Spotify sometimes returns a phantom NA row (e.g. a region-restricted or
+    # unavailable episode) ahead of the real latest one. Skip NA URIs and take
+    # the first valid episode instead of blindly grabbing row 1 (which would
+    # POST a "uris=NA" and 400).
+    valid_uris <- episodes$items$uri[!is.na(episodes$items$uri)]
+    if (length(valid_uris) > 0) {
+        add_items_to_playlist(playlist_id = playlist_id, uris = valid_uris[1],
                               position = position, market = market,
                               authorization = authorization)
     }
@@ -363,4 +371,3 @@ reorder_replace_playlist_items <- function(playlist_id, uris,
                   paste0(uris, collapse = ","))
     tinyoauth::oauth_request(authorization, url, "PUT", flatten = TRUE)
 }
-

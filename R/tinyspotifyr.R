@@ -29,4 +29,3 @@ globalVars <- c("album_name", "album_name_", "album_release_year_",
 if (getRversion() >= "2.15.1") {
     utils::globalVariables(globalVars)
 }
-

@@ -153,4 +153,3 @@ get_related_artists <- function(id,
 
     return(res)
 }
-
